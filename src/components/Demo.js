@@ -1,28 +1,30 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Widget, addResponseMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 
 import dialogflow2 from '../services/Dialogflow';
 
-const Demo = ({ ...props }) => {
-    const onRes = res => {
-        addResponseMessage(res.queryResult.fulfillmentText)
-    }
+const Demo = ({ addResponseMessageFunction, dialogflowService, ...props }) => {
+    const onRes = useCallback(res => {
+        addResponseMessageFunction(res.queryResult.fulfillmentText)
+    }, [addResponseMessageFunction])
 
-    const handleNewUserMessage = (newMessage) => {
-        handlePress(newMessage);
-    };
-
-    const handlePress = (newMessage) => {
-        dialogflow2.requestQuery(newMessage, onRes, error => console.log(error));
-    }
+    const handleNewUserMessage = useCallback(newMessage => {
+        dialogflowService.requestQuery(newMessage, onRes, error => console.log(error));
+    }, [onRes, dialogflowService])
 
     return <Widget
-        subtitle={''}
-        title={'Quorum Support'}
         handleNewUserMessage={handleNewUserMessage}
+
+        {...props}
     />
-    // <button onClick={handlePress}>Send</button>
+}
+
+Demo.defaultProps = {
+    subtitle: '',
+    title: 'Quorum Support',
+    dialogflowService: dialogflow2,
+    addResponseMessageFunction: addResponseMessage
 }
 
 export default React.memo(Demo)
