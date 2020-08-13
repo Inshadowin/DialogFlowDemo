@@ -1,3 +1,4 @@
+import config from '../config/index';
 import googleAuth from './googleAuth';
 export const DEFAULT_BASE_URL = "https://cors-anywhere.herokuapp.com/https://dialogflow.googleapis.com/v2/projects/";
 
@@ -102,10 +103,10 @@ export const Dialogflow_V2 = class Dialogflow_V2 {
     requestQuery = async (query, onResult, onError) => {
 
         const data = {
-            "queryParams": {
-                "contexts": this.mergeContexts(this.contexts, this.permanentContexts),
-                "sessionEntityTypes": []
-            },
+            // "queryParams": {
+            //     "contexts": this.mergeContexts(this.contexts, this.permanentContexts),
+            //     "sessionEntityTypes": []
+            // },
             "queryInput": {
                 "text": {
                     "text": query,
@@ -241,11 +242,6 @@ dialogflow2.finishListening = function () {
     Voice.stop();
 }
 
-dialogflow2.setConfiguration(
-    "joetestdialogflow@refined-rookery-286216.iam.gserviceaccount.com",
-    '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDB0ZTxs1Yg0UIY\nSiedb/3hgkZmkBIEMVmm4YkXlHb8QW7YFZbmZRoKEUn1PTlhFVJHf79EUejfaeZZ\nOILQ3YXldsvgorpkTVuFQgwOtkpGT8D9KWzz4CDqzI5aDZiE4mcbrWexsCb7k18j\nN0bWle36r9OSDVE80CtNFL7uoSrEhgeq3fRb35C6kSNb0kn689/PMhpKZuZaP6y5\nWlHelEcLUyfQ/rrrr+kXSF06DGlMdAsTofIrBOmQB4ubXzsYvt2URsj1C+A3M3P3\nOOAKp5TGFDbx1sH1vyTR805CyI7t0Hc9uw3XLeywWInbwGUmHw03/R1yH3B5t/wN\n0iFedAYvAgMBAAECggEAG2AHOgY69YKo47ZhlwaQ5M+aMvVJXic8QupbCyYQkjuJ\ntOKDwEHqZh6gBA/kMVaqGugrszIggqG6A8MMEwUe2tSnIjDJw837TbyQ6GkN35V3\nLCq0NVPkQlWnC4gdETPLHWkmGr5HG0Rq7RXrHvbpOH2qE9hmr4C1hPsXpqvD1yLZ\n6+fEfJBuwLnzO4dQEfDFkq3AD/3ILID3DHszaOFV3JXAfnCuZIr1gOCp6jph+6zc\nSz/ieOkbeiVaEaFXtQtuRcbAhtzIiH4eYB8YAK/3D27n7tbmNbiqsBp1g5YpyNeH\nbH5q+yJDRu67oGg63OzIeiXdr718+WFOskvZNd7zFQKBgQD1nur+laOrssB2R+dn\nSwdtsHDSEpEwcS7AdeZxGoM4odi8/zA7GjcGgRet3aN8XAMk1TxpEe8SKP1iwU8D\nYlghrMbd0Tu04Db+ynR976eNgxed3QG5cPwOPDF8omgJf4327THl/5lpEnPQ5rcy\n4VX1ETkX0h2iIEM7kXQw/u1s0wKBgQDKAkcpl80meYEcNwopd2KCiRWV4kxhAv1w\nCHuOPMeC/DufIEM2l5d/0SKEVLMJ1qDUGSODkokWjGv80tVsybciwIuRNmO7aEfr\n4fU09nQKGWgPXD7GipLC7mQr7D89kNlb0lEqkJf5P0f6ppRCIBFc4Qx1T9On2wgW\nodN6UQB3tQKBgQCW4DyXj9HPCWlh/r8tWxBAF87lq9QVvqCqRoH8Xf3XDsv1JIg6\n9dpxG2ExQuFG5bpkqLuICyUgsZ8cR4RCnulmHhy2au1TKRt/HVu7dDgnHCyoovaJ\nM9cQ43a+iYCAvSK2WHN7Rau1uEj+PIqyLWrAtAivEjlzun+yGqIV6rJrUwKBgF3H\nIPIWHo616VIH2xfU7E5dBUBHhd2jXbQcu/8UCCqunZ8JgypcxV/43mVATL1Mfez4\nnpv98tYc6iS8W4fdPL9NU31eGn5tsrW2d/bWUpg9oyk+UYYp3mfP84DQc6tJCx6t\nTDDOXz6+OdQKcNkhue28K+Rp4oASFncrONmXsPfhAoGBAItNL6NARHJEbKIzZKzM\nqnh9ybmKVl7NdiAISLcZgsoNLJU0MtnxJSH6t9uFEHXRCa/4QAM+hD/I2JRimh3l\n+pH23WSYiuZdCEA5Ztu2GVUcVl3bPKJn550QUEMtpwuzjsioAB6LYbJzvACPYndy\ndbNcerHrplg6EscuLIGy5kYI\n-----END PRIVATE KEY-----\n',
-    dialogflow2.LANG_ENGLISH,
-    'refined-rookery-286216'
-);
+dialogflow2.setConfiguration(...config);
 
 export default dialogflow2;
