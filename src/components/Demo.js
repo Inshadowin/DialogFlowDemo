@@ -6,6 +6,8 @@ import dialogflow2 from '../services/Dialogflow';
 
 const Demo = ({ addResponseMessageFunction, dialogflowService, ...props }) => {
     const onRes = useCallback(res => {
+        if (!res || !res.queryResult) return console.error('Message not recieved', res);
+
         addResponseMessageFunction(res.queryResult.fulfillmentText)
     }, [addResponseMessageFunction])
 
