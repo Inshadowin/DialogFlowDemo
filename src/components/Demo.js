@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Widget, addResponseMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 
-import dialogflow2 from '../services/DemoService';
+import dialogflow2 from '../services/Dialogflow';
 
 const defaultResponseFilter = res => res.queryResult.fulfillmentText;
 const demoResponseFilter = res => res.result.fulfillment.speech;
@@ -43,9 +43,11 @@ Demo.defaultProps = {
     title: 'Quorum Support',
     dialogflowService: dialogflow2,
 
-    errorHandleFunction: demoErrorHandle,
+    // errorHandleFunction: demoErrorHandle,
+    errorHandleFunction: defaultErrorHandle,
 
-    responseFilterFunction: demoResponseFilter,
+    // responseFilterFunction: demoResponseFilter,
+    responseFilterFunction: defaultResponseFilter,
     addResponseMessageFunction: addResponseMessage
 }
 

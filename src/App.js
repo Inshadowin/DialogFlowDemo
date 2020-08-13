@@ -1,12 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import Demo from './components/Demo';
+import QuorumDemo from './components/QuorumDemo';
 
 function App() {
   return (
     <div>
-      <Demo />
+      <QuorumDemo />
     </div >
   );
 }

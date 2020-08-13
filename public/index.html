@@ -1,43 +1,1992 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- NOTE for QUORUM: The above 3 meta tags *must* come first in the head; any other head content must come AFTER these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="favicon.ico">
+  <title>Quorum Dashboard</title>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  <!-- NOTE for QUORUM: Quorum Bootstrap CSS files - currently these files will contain a lot more bloat then the final ones -->
+  <link href="Content/10_Bootstrap/quorum-bootstrap.css" rel="stylesheet">
+  <link href="Content/20_Kendo/kendo-styles.css" rel="stylesheet">
+  <link href="Content/30_Quorum/quorum-bootstrap-theme.css" rel="stylesheet">
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+  <!-- IMPORTANT MMenu Styles below -->
+  <link href="Scripts/mmenu/core/css/jquery.mmenu.all.css" rel="stylesheet">
+
+  <script src="Content/20_Kendo/js/jquery-1.9.1.js"></script>
+  <script src="Content/20_Kendo/js/kendo.all.js"></script>
+  <script src="Content/10_Bootstrap/js/quorum-bootstrap.js"></script>
+  <script src="Content/20_Kendo/js/kendo.aspnetmvc.js"></script>
+  <script src="Content/30_Quorum/js/form-control.js"></script>
+  <!-- IMPORTANT: This file includes the functions to toggle the animation classes and handle the pillbox tabs-->
+  <script src="Content/30_Quorum/js/animations.js"></script>
+
+  <!-- IMPORTANT MMenu scripts below -->
+  <script src="Scripts/mmenu/core/js/jquery.mmenu.min.all.js"></script>
+  <script src="Scripts/mmenu/addons/js/jquery.mmenu.fixedelements.min.js"></script>
+
+  <!-- Code to overcome IE mobile browser bug - This should be bundled into QFC Javascript -->
+  <script type="text/javascript">
+    (function () {
+      if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+        var msViewportStyle = document.createElement("style");
+        msViewportStyle.appendChild(
+          document.createTextNode("@-ms-viewport{width:auto!important}")
+        );
+        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+      }
+    })();
+  </script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+  <!-- Below are styles that could potentially affect the old header and menu -->
+  <style type="text/css">
+    .support-search-button {
+      background: transparent;
+      opacity: 0.54;
+      float: right;
+      width: 18px;
+      height: 18px;
+      margin: 12px 16px 0 0;
+      border: 0;
+    }
+
+    .support-search-button:hover,
+    .support-search-button:focus {
+      opacity: 0.87;
+    }
+
+    #support-search {
+      margin-right: 0;
+    }
+
+    .pane-conversation-area {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+
+
+    .support-pane-answer-area {
+      flex: 1;
+    }
+
+    .support-pane-primary-buttons {
+      border-top: 1px solid #9f9f9f;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .submit-childarea1,
+    .submit-childarea2 {
+      margin: 12px auto;
+    }
+
+    .support-pane-query {}
+
+    .support-pane-answer {
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    .support-image {
+      border: 1px solid #9f9f9f;
+      border-radius: 4px;
+    }
+
+    .support-pane-source {
+      font-size: 12px;
+      margin: 6px 0;
+    }
+
+    .support-pane-source a {
+      color: #047bc1;
+    }
+
+    .support-pane-source a:hover {
+      text-decoration: underline;
+    }
+
+    .support-pane-feedback-msg,
+    .support-pane-feedback-confirm {
+      margin: 12px 0;
+    }
+
+    .support-pane-feedback-confirm {
+      font-style: italic;
+    }
+
+    .support-pane-responses {
+      padding: 4px 12px;
+      text-align: center;
+      border: 1px solid #047bc1;
+      border-radius: 4px;
+      text-transform: uppercase;
+      color: #047bc1;
+      background: transparent;
+    }
+
+    .support-pane-responses:focus,
+    .support-pane-responses:hover {
+      background: #047bc1;
+      color: #fff;
+    }
+
+    .support-spinner {
+      width: 100%;
+      text-align: center;
+    }
+
+    .support-calltoaction {
+      text-align: center;
+      opacity: 0.27;
+    }
+
+    .support-pane-flex {
+      display: flex !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="page">
+    <div class="float_search_auto nosmallmobile wback" id="q_autocomplete">
+      <span class="q-form-control-wrapper"><label class="q-form-control-label classic"
+          for="autocomplete2">Search</label> <input class="q-form-control-input" id="autocomplete2"> <span
+          class="q-form-control-error">Enter valid input.</span></span>
+      <script>
+        $("#autocomplete2").getFlyLabel();
+      </script>
+    </div>
+    <div class="LockOnInvisible" id="lockPane">
+      <div class="k-content">
+        <div id="progress" style="width: 25%;"></div>
+      </div>
+      <div id="lockText"></div>
+    </div><span class="popupNotificationClass" id="popupNotification"></span>
+    <header class="header-new">
+      <div class="header-layout">
+        <div class="header-menu">
+          <div id="menuCollapsed">
+            <a class="activateMenu sprite q-contentw_Hamburger" href="#mainMenuSlideOut"></a>
+          </div>
+        </div>
+        <div class="header-link">
+          <ol class="breadcrumb hidden">
+            <li>
+              <a class="nomobile" href="javascript:void(0)">dashboard</a>
+            </li>
+          </ol>
+        </div>
+        <div class="header-title">
+          <h1><span class="header-text">Dashboard</span><span id="DoNotUseMe"><sup>*</sup></span></h1>
+          <!-- Note: the id is only used for demo purposes, no span or id should be used when an asterisk is added to a page with unsaved changes -->
+        </div>
+        <div class="header-user wback">
+          <div class="nosmallmobile wback q-dropdown" id="q_d_1">
+            <!-- IMPORTANT Note: The class alert_asterisk would be added below when there are unsaved changes -->
+            <div aria-expanded="false" aria-haspopup="true" class="q-head-btn q-header_User" data-toggle="dropdown"
+              id="btnHeaderUser">
+              <span class="q-header_Item">Joe Soap</span>
+            </div>
+            <ul aria-labelledby="btnHeaderUser" class="q-dropdown-menu dropdown-menu dropdownUsermenu" role="menu">
+              <li class="dropdown-header" role="presentation">Settings</li>
+              <li>
+                <a href="index.html">My Profile</a>
+              </li>
+              <li>
+                <a href="index.html">Change Password</a>
+              </li>
+              <li>
+                <a href="index.html">View Open Screens ()</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)">Sign Out</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="header-persona wback">
+          <div class="wback nosmallmobile q-dropdown" id="q_d_2">
+            <div aria-expanded="false" aria-haspopup="true" class="q-head-btn q-header_Persona" data-toggle="dropdown"
+              id="btnHeaderPersona">
+              <span class="q-header_Item">Internal Scheduler</span>
+            </div>
+            <ul aria-labelledby="btnHeaderPersona" class="q-dropdown-menu dropdown-menu dropdownPersonamenu"
+              role="menu">
+              <li class="dropdown-header" role="presentation">Workspace</li>
+              <li>
+                <a href="javascript:void(0)"><span class="sprite q-content_Forward q-head-selected"></span>
+                  Scheduler</a>
+              </li>
+              <li>
+                <a class="mypersona" href="javascript:void(0)"><span class="sprite q-content_ViewRecentHistory"></span>
+                  Contract Admin</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)"><span class="sprite q-content_ViewRecentHistory"></span> Operator</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)"><span class="sprite q-content_ViewRecentHistory"></span> Accountant</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)"><span class="sprite q-content_ViewRecentHistory"></span> Controller</a>
+              </li><!-- Maximum 5 shown before more link is added -->
+              <li class="endstate">
+                <a href="javascript:void(0)">More</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="header-alert wback">
+          <div class="sprite q-head-btn q-header_Alerts">
+            <span class="q-header_ItemRed"><span class="q-header_AlertNumbern q-alertTotalItem">0</span> <span
+                class="sprite q-contentw_Alert"></span></span>
+          </div>
+        </div>
+        <div class="header-search">
+          <div class="nosmallmobile">
+            <div class="q-search">
+              <a class="sprite active q-content_View" data-placement="bottom" data-toggle="tooltip"
+                href="javascript:void(0)" id="autoSearch" title="Search"></a>
+            </div>
+          </div>
+        </div>
+        <div class="header-mobile">
+          <!-- Mobile drop down -->
+          <button aria-expanded="false" aria-haspopup="true" class="sprite q-head_DropDown q-contentw_MoreActions"
+            data-toggle="dropdown" id="btnHeadDropDown"></button>
+          <div class="q-header" id="dataset_header_menu" role="menu">
+            <div class="row">
+              <ul aria-labelledby="btnHeadDropDown"
+                class="q-dropdown-menu dropdown-menu dropdownMoremenu onlysmallmobile datasetHeaderMenuMobileDropdown"
+                role="menu">
+                <li class="dropdown-header" role="presentation">Alerts</li>
+                <li role="presentation">
+                  <a href="index.html" role="menuitem" tabindex="-1">View 4 alerts</a>
+                </li>
+                <li class="divider" role="presentation"></li>
+                <li class="dropdown-header" role="presentation">Profile</li>
+                <li role="presentation">
+                  <a href="index.html" role="menuitem" tabindex="-1">View Profile</a>
+                </li>
+                <li role="presentation">
+                  <a href="index.html" role="menuitem" tabindex="-1">Sign Out</a>
+                </li>
+                <li class="divider" role="presentation"></li>
+                <li class="dropdown-header" role="presentation">Help</li>
+                <li role="presentation">
+                  <a href="https://qbsol.helpdocsonline.com/home" role="menuitem" tabindex="-1" target="_blank">View
+                    Help Documentation</a>
+                </li>
+                <li class="divider" role="presentation"></li>
+                <li class="dropdown-header" role="presentation">Workspace</li>
+                <li role="presentation">
+                  <a href="javascript:void(0)" role="menuitem" tabindex="-1">Internal Scheduler</a>
+                </li>
+                <li role="presentation">
+                  <a class="mypersona" href="javascript:void(0)" role="menuitem" tabindex="-1">Contract Admin</a>
+                </li>
+                <li role="presentation">
+                  <a href="javascript:void(0)" role="menuitem" tabindex="-1">Operator</a>
+                </li>
+                <li role="presentation">
+                  <a href="javascript:void(0)" role="menuitem" tabindex="-1">Accountant</a>
+                </li>
+                <li role="presentation">
+                  <a href="javascript:void(0)" role="menuitem" tabindex="-1">Controller</a>
+                </li><!-- Maximum 5 shown before more link is added -->
+                <li class="endstate">
+                  <a href="javascript:void(0)">More</a>
+                </li>
+                <li class="divider" role="presentation"></li>
+                <li class="dropdown-header" role="presentation">Recent History</li>
+                <!-- IMPORTANT: If no results are here, show only the empty <li> below -->
+                <!-- <li class="empty"> Currently no items </li> -->
+                <li role="presentation">
+                  <a href="javascript:void(0)">Confirmation Response</a>
+                </li>
+                <!-- Entries like the ones below would appear if there were unsaved changes - each with an asterisk. When the changes were saved, they would also disappear from here. The class alert_asterisk would also be removed above -->
+                <li role="presentation">
+                  <a href="javascript:void(0)">Nomination Submission <sup>*</sup></a>
+                </li>
+                <li role="presentation">
+                  <a href="javascript:void(0)">Nomination Maintenance <sup>*</sup></a>
+                </li>
+                <li role="presentation">
+                  <a href="javascript:void(0)">Capacity Release Awards</a>
+                </li>
+                <li role="presentation">
+                  <a href="javascript:void(0)">Capacity Release Offers</a>
+                </li>
+                <li class="endstate">
+                  <a href="javascript:void(0)">More</a>
+                </li>
+              </ul><!-- End q-header -->
+            </div><!-- End of mobile drop down -->
+            <!-- END of changes on 05-05-2015 on mobile dropdown, autocomplete on search and bug fixex -->
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="q-actionbar actionbar2-new" id="q-sticky">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-10 col-md-8 col-lg-10 q-action q-action-hub">
+            <div class="q-action_Hub">
+              <div class="actionbarselect" id="UnitSelection">
+                <div class="unitselect">
+                  <!-- For future inclusion: <span class="sprite q-actionw_Warning"></span> -->
+                  Midwest Pipeline
+                </div><span class="sprite q-actionw_View iconselect"></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-14 col-md-16 col-lg-14 q-action q-action-add">
+            <!-- Tertiary action drop down. Note for mobile, secondary actions are included at the top of the drop down with the class .onlyformobile -->
+            <!-- IMPORTANT: All <a> tags have been changed to <button> tags and the disabled="disabled" state should be assigned to the button, not the <li> -->
+            <div class="actionholder3">
+              <button aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" id="btnMoreActions"><span
+                  class="sprite q-actionw_MoreActions"></span></button> <!-- Drop down menu -->
+              <ul aria-labelledby="btnMoreActions"
+                class="q-dropdown-menu dropdown-menu dropdownMoremenu tertiaryDropDown" role="menu">
+                <!--<li role="presentation" class="dropdown-header onlymobile">Secondary</li>-->
+                <li><button><span class="sprite q-action_Update"></span><span>Customize Dash</span></button></li>
+              </ul><!-- end of drop down -->
+            </div>
+
+            <!-- IMPORTANT: Note how the tooltip attributes that were on the <span> tags below have moved onto the buttons. This prevents the tooltip from being fired when the button is disabled -->
+            <!-- Secondary action buttons area - hidden for mobile with .nomobile == should only have a maximum of 4 icons -->
+            <div class="actionholder2 nomobile hiddenn">
+
+            </div>
+
+            <!-- Primary action button area -->
+            <!-- Maximum number of primary actions is 3 -->
+            <div class="actionholder1 hidden">
+
+            </div>
+            <div class="actionholderWIP"></div>
+          </div>
+        </div>
+      </div>
+      <div class="actionbar-float-right hidden">
+        <div class="floatingclose" data-offset-top="70" data-spy="affix">
+          <button data-placement="bottom" data-toggle="tooltip" onclick="javascript:void(0)" title="Close Screen"><span
+              class="sprite q-content_Cancel"></span></button>
+        </div>
+      </div>
+    </div><!-- Add alert banner in here -->
+    <section>
+      <div class="sectionLayout">
+        <div class="sectionHolder">
+          <div class="intro">
+            <p></p>
+          </div>
+
+          <!-- Placeholder container only, DONT use any of the code below -->
+
+          <div class="content">
+            <div class="row">
+              <div class="col-xs-24 col-sm-9 col-md-9" id="leftcol" data-role="sortable">
+                <!-- Left large column -->
+
+
+
+
+                <!-- Contracts Widget -->
+                <div id="widget-contracts" class="widget material q-teal">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Contracts</h1>
+                    </div>
+                  </div>
+
+
+                  <a href="#1" class="masterlink">
+                    <div class="row">
+                      <div class="col-xs-24 arealink hovshow">
+
+                        <!-- Medium dataarea -->
+                        <div class="row">
+                          <div class="col-xs-24 dataarea divider">
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <span class="alertlabel">Active Contracts</span>
+                                <span class="datamedium widget-Contracts">11</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </a>
+
+
+                  <a href="#2" class="masterlink">
+                    <div class="row">
+                      <div class="col-xs-24 arealink hovshow">
+
+
+                        <!-- Subtitle-->
+                        <div class="row">
+                          <div class="col-xs-24">
+                            <h2>Mixed RFS Activity</h2>
+                          </div>
+                        </div>
+
+
+
+                        <!-- small data area -->
+                        <div class="row">
+                          <div class="col-xs-24 dataarea divider">
+
+                            <!-- line1 -->
+                            <div class="row">
+                              <div class="col-xs-24 col-sm-24 col-md-12">
+                                <span class="datalabel">Denied RFS</span>
+                                <span class="data widget-Denied">1</span>
+                              </div>
+
+                              <div class="col-xs-24 col-sm-24 col-md-12">
+                                <span class="datalabel">Awarded RFS</span>
+                                <span class="data widget-Awarded">1</span>
+                              </div>
+
+                            </div>
+
+
+                            <!-- line2 -->
+                            <div class="row">
+                              <div class="col-xs-24 col-sm-24 col-md-12">
+                                <span class="datalabel">In Progress</span>
+                                <span class="data widget-approval">2</span>
+                              </div>
+
+                              <div class="col-xs-24 col-sm-24 col-md-12">
+                                <!-- Blank area 
+                                                    <span class="datalabel">Title</span>
+                                                    <span class="data widget-corresponding">999</span>
+                                                    -->
+                              </div>
+
+                            </div>
+
+
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </a>
+
+
+                  <!-- Footer area -->
+
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 widgetfooter arealink">
+                      <a href="javascript:void(0)" class="footer-add">New RFS</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 widgetfooter arealink">
+                      <a href="javascript:void(0)" class="footer-view">View Contracts</a>
+                    </div>
+                  </div>
+
+
+
+                </div>
+                <!-- End of Contracts Widget -->
+
+
+
+
+
+
+
+
+
+
+                <!-- CR My Offers Widget -->
+                <div id="widget-myoffers" class="widget material q-lightblue">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Capacity Release - My Offers</h1>
+                    </div>
+                  </div>
+
+
+
+                  <div class="row">
+                    <div class="col-xs-24 arealink">
+
+                      <!-- Subtitle for data section-->
+                      <div class="row">
+                        <div class="col-xs-24">
+                          <h2>My Recently Closed Offers</h2>
+                        </div>
+                      </div>
+
+
+
+                      <!-- small data area -->
+                      <div class="row">
+                        <div class="col-xs-24 dataarea divider">
+
+                          <!-- line1 -->
+                          <div class="row">
+                            <a href="#3" class="masterlink">
+
+                              <div class="col-xs-24 col-sm-24 col-md-12 hovshow">
+                                <span class="datalabel">Recently Awarded</span>
+                                <span class="data widget-RecentlyAwardedOffer">3</span>
+                              </div>
+
+                            </a>
+
+                            <a href="#4" class="masterlink">
+
+                              <div class="col-xs-24 col-sm-24 col-md-12 hovshow">
+                                <span class="datalabel">Expired Without Bids</span>
+                                <span class="data widget-OffersExpiredWithoutBids">2</span>
+                              </div>
+                            </a>
+
+
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-xs-24 arealink">
+
+                      <!-- Subtitle for data section-->
+                      <div class="row">
+                        <div class="col-xs-24">
+                          <h2>My Prearranged Offers</h2>
+                        </div>
+                      </div>
+
+                      <!-- small data area -->
+                      <div class="row">
+                        <div class="col-xs-24 dataarea divider">
+
+                          <!-- line1 -->
+                          <div class="row">
+                            <a href="#5" class="masterlink">
+                              <div class="col-xs-24 col-sm-24 col-md-12 hovshow">
+                                <span class="datalabel">Offers Awaiting Confirmation</span>
+                                <span class="data widget-AwaitingApproval">3</span>
+                              </div>
+                            </a>
+                            <div class="col-xs-24 col-sm-24 col-md-12">
+                              <!--<span class="datalabel">Title</span>
+                                                    <span class="data widget-Awarded">999</span> -->
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+
+
+                  <div class="row">
+                    <div class="col-xs-24 arealink">
+
+                      <!-- Subtitle for data section-->
+                      <div class="row">
+                        <div class="col-xs-24">
+                          <h2>My Open Bidding Offers</h2>
+                        </div>
+                      </div>
+
+                      <!-- small data area -->
+                      <div class="row">
+                        <div class="col-xs-24 dataarea divider">
+
+                          <!-- line1 -->
+                          <div class="row">
+                            <a href="#6" class="masterlink">
+                              <div class="col-xs-24 col-sm-24 col-md-12 hovshow">
+                                <span class="datalabel">Active Offers You Posted</span>
+                                <span class="data widget-ActiveOffersYouPosted">2</span>
+                              </div>
+                            </a>
+
+                            <a href="#7" class="masterlink">
+                              <div class="col-xs-24 col-sm-24 col-md-12 hovshow">
+                                <span class="datalabel">Bids on Your Offers</span>
+                                <span class="data widget-BidsOnYourOffers">7</span>
+                              </div>
+                            </a>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                  <!-- Footer area -->
+
+                  <div class="row">
+                    <div class="col-xs-8 col-sm-8 col-md-8 widgetfooter arealink">
+                      <a href="javascript:void(0)" class="footer-add">New Offer</a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 widgetfooter arealink">
+                      <a href="javascript:void(0)" class="footer-recallreput">Recall/Reput</a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 widgetfooter arealink">
+                      <a href="javascript:void(0)" class="footer-withdraw">Withdraw</a>
+                    </div>
+                  </div>
+
+
+
+                </div>
+                <!-- End of CR My Offers Widget -->
+
+
+
+
+
+
+                <!-- Example Widget -->
+                <div id="widget-specificlinks" class="widget material q-teal">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Example Widget Containing Specific Links</h1>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-xs-24 linkarea">
+                      <!-- Links appear within this data area -->
+
+                      <a href="#2" class="masterlink">
+                        <div class="row">
+                          <div class="col-xs-24 arealink hovshow">
+
+
+                            <!-- Subtitle-->
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <h2>View Example Link</h2>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+
+
+
+                      <a href="#2" class="masterlink">
+                        <div class="row">
+                          <div class="col-xs-24 arealink hovshow">
+
+
+                            <!-- Subtitle-->
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <h2>View Example Link2</h2>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+
+                      <a href="#2" class="masterlink">
+                        <div class="row">
+                          <div class="col-xs-24 arealink hovshow">
+
+
+                            <!-- Subtitle-->
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <h2>View Example Link3</h2>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+
+
+                      <!-- End of links -->
+
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+                </div>
+                <!-- End of Example Widget -->
+
+
+
+                <!-- Example revenue -->
+                <div id="widget-examplerevenue" class="widget material q-lightblue">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Postblend Revenue By System</h1>
+                    </div>
+                  </div>
+
+
+
+                  <div class="row">
+                    <div class="col-xs-24 arealink">
+
+
+
+                      <!-- revenue data area -->
+                      <div class="row">
+                        <div class="col-xs-24 revenuearea divider">
+
+
+                          <div class="row">
+                            <div class="col-xs-24 col-sm-24 col-md-24">
+                              <span class="datalabel">Peace</span>
+                              <span class="datasmall usd">81,460,456,813.35</span>
+                            </div>
+                          </div>
+
+
+
+                          <div class="row">
+                            <div class="col-xs-24 col-sm-24 col-md-24">
+                              <span class="datalabel">Drayton</span>
+                              <span class="datasmall usd">37,487.56</span>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+
+                      </div>
+
+
+
+                      <!-- total revenue data area -->
+                      <div class="row">
+                        <div class="col-xs-24 totalrevenuearea divider">
+
+
+                          <div class="row">
+                            <div class="col-xs-24 col-sm-24 col-md-24">
+                              <span class="datalabel">Total</span>
+                              <span class="datasmall usd">81,460,494,259.91</span>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+
+
+                      </div>
+
+
+
+
+                    </div>
+                  </div>
+
+
+
+                </div>
+                <!-- End of Example revenue -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- End of left large column -->
+              </div>
+
+
+
+              <div class="col-xs-24 col-sm-9 col-md-9" id="rightcol" data-role="sortable">
+                <!-- Right large column -->
+
+
+
+
+
+
+
+
+
+                <!-- CR My Bids Widget -->
+
+                <div id="widget-capacityreleasemybids" class="widget material q-lightblue">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Capacity Release - My Bids</h1>
+                    </div>
+                  </div>
+
+                  <a href="#8" class="masterlink">
+                    <div class="row">
+                      <div class="col-xs-24 arealink hovshow">
+
+                        <!-- Medium dataarea -->
+                        <div class="row">
+                          <div class="col-xs-24 dataarea divider">
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <span class="alertlabel">Bids Awarded</span>
+                                <span class="datamedium widget-Awarded">11</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </a>
+                  <!--custom numeric area -->
+
+                  <a href="#9" class="masterlink">
+                    <div class="row">
+                      <div class="col-xs-24 arealink hovshow">
+
+                        <!-- Subtitle-->
+                        <div class="row">
+                          <div class="col-xs-24">
+                            <h2>New Recall/Reput Activity</h2>
+                          </div>
+                        </div>
+
+
+                        <div class="row cycleheader">
+                          <div class="col-xs-6">
+                            <span>T</span>
+                          </div>
+
+                          <div class="col-xs-6">
+                            <span>E</span>
+                          </div>
+
+                          <div class="col-xs-6">
+                            <span>ID1</span>
+                          </div>
+
+                          <div class="col-xs-6">
+                            <span>ID2</span>
+                          </div>
+
+
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-xs-24 divider">
+
+                            <!-- line1 -->
+                            <div class="row numericcyclearea">
+                              <div class="col-xs-6">
+                                <span class="data flagwarning">1</span>
+                              </div>
+
+                              <div class="col-xs-6">
+                                <span class="data">0</span>
+                              </div>
+
+                              <div class="col-xs-6">
+                                <span class="data">0</span>
+                              </div>
+
+                              <div class="col-xs-6">
+                                <span class="data">0</span>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
+
+
+
+                      </div>
+                    </div>
+                  </a>
+
+
+
+                  <div class="row">
+                    <div class="col-xs-24 arealink">
+
+
+                      <!-- small data area -->
+
+                      <!-- Subtitle-->
+                      <div class="row">
+                        <div class="col-xs-24">
+                          <h2>My Prearranged Bids</h2>
+                        </div>
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-xs-24 dataarea divider">
+
+                          <!-- line1 -->
+                          <div class="row">
+                            <a href="#10" class="masterlink">
+                              <div class="col-xs-24 col-sm-24 col-md-12 hovshow">
+                                <span class="datalabel">Bids to Confirm</span>
+                                <span class="data widget-AwaitingApproval">3</span>
+                              </div>
+                            </a>
+                            <div class="col-xs-24 col-sm-24 col-md-12">
+                              <!-- <span class="datalabel">Title</span>
+                                                    <span class="data widget-*">999</span> -->
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+
+
+
+                  <div class="row">
+                    <div class="col-xs-24 arealink">
+
+
+                      <!-- small data area -->
+
+                      <!-- Subtitle-->
+                      <div class="row">
+                        <div class="col-xs-24">
+                          <h2>My Open Bidding Bids</h2>
+                        </div>
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-xs-24 dataarea divider">
+
+                          <!-- line1 -->
+                          <div class="row">
+                            <a href="#11" class="masterlink">
+                              <div class="col-xs-24 col-sm-24 col-md-12 hovshow">
+                                <span class="datalabel">Active Bids you Placed</span>
+                                <span class="data widget-ActiveBidsYouPlaced">2</span>
+                              </div>
+                            </a>
+
+                            <div class="col-xs-24 col-sm-24 col-md-12">
+                              <!-- <span class="datalabel">Title</span>
+                                                    <span class="data widget-*">999</span> -->
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+
+
+                    </div>
+                  </div>
+
+                  <!-- Footer area -->
+
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 widgetfooter arealink">
+                      <a href="javascript:void(0)" class="footer-view">View 15 Available Offers</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 widgetfooter arealink">
+                      <a href="javascript:void(0)" class="footer-view">View Bid Summary</a>
+                    </div>
+                  </div>
+
+
+
+                </div>
+
+
+                <!-- End of CR My Bids Widget -->
+
+
+
+
+
+
+                <!-- Capacity Release summary Widget -->
+                <div id="widget-capacityreleasesummary" class="widget material q-lightblue">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Capacity Release</h1>
+                    </div>
+                  </div>
+
+                  <a href="#12" class="masterlink">
+                    <div class="row">
+                      <div class="col-xs-24 arealink hovshow">
+
+
+                        <!-- Medium dataarea -->
+                        <div class="row">
+                          <div class="col-xs-24 dataarea divider">
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <span class="alertlabel">Available Offers</span>
+                                <span class="datamedium widget-AnAvailableOffer">15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </a>
+
+
+                </div>
+
+                <!-- End of Capacity Release summary widget -->
+
+
+
+
+
+                <!-- Contacts - On Call Widget -->
+                <div id="widget-contacts" class="widget material q-gunmetal">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Contacts - On Call</h1>
+                    </div>
+                  </div>
+
+
+                  <!-- Contact area -->
+                  <div class="row">
+                    <div class="col-xs-24 contactarea divider arealink">
+                      <div class="row">
+                        <div class="col-xs-12 col-sm-24 col-md-24 col-lg-12">
+                          <span class="title">John Doe</span>
+                          <span class="position">Customer Service Rep</span>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-24 col-md-24 col-lg-12">
+                          <span class="phone">713-555-5555</span>
+                          <span class="other"><a href="javascript:void(0)">IM</a> | <a
+                              href="javascript:void(0)">Email</a></span>
+                        </div>
+
+                        <div class="col-xs-24">
+                          <!-- Note the offline class to gray out the field -->
+                          <span class="livechat offline">
+                            <span class="sprite livechaticon"></span> <a href="javascript:void(0)">Live Chat -
+                              Offline</a>
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- Contact area -->
+                  <div class="row">
+                    <div class="col-xs-24 contactarea divider arealink">
+                      <div class="row">
+                        <div class="col-xs-12 col-sm-24 col-md-24 col-lg-12">
+                          <span class="title">Jane Doe</span>
+                          <span class="position">Scheduling Rep</span>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-24 col-md-24 col-lg-12">
+                          <span class="phone">713-123-5555</span>
+                          <span class="other"><a href="javascript:void(0)">IM</a> | <a
+                              href="javascript:void(0)">Email</a></span>
+                        </div>
+
+                        <div class="col-xs-24">
+                          <span class="livechat">
+                            <span class="sprite livechaticon"></span> <a href="javascript:void(0)">Live Chat -
+                              Online</a>
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+                  <!-- Footer area -->
+
+                  <div class="row">
+                    <div class="col-xs-24 col-sm-24 col-md-24 widgetfooter arealink">
+                      <a href="javascript:void(0)" class="footer-view">View Full Contact List </a>
+                    </div>
+                  </div>
+
+
+
+                </div>
+                <!-- End of Contacts - On Call Widget -->
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- End of Right large column -->
+              </div>
+
+
+
+              <div class="col-xs-24 col-sm-6 col-md-6" id="sidecol" data-role="sortable">
+                <!-- Sidebar column -->
+
+
+
+                <!-- Cycle Widget -->
+
+
+                <div id="widget-cycle" class="widget material q-sidebar">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Capacity Release Cycle</h1>
+                    </div>
+                  </div>
+                  <!-- Cycle area -->
+                  <div class="row">
+                    <div class="col-xs-24 cyclearea divider">
+                      <!-- Header row -->
+                      <div class="row cycleheader">
+                        <div class="col-xs-8 col-sm-24 col-md-24 col-lg-8">
+
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span>T</span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span>E</span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span>ID1</span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span>ID2</span>
+                        </div>
+
+
+                      </div>
+                      <!-- End of Header row -->
+
+
+                      <!-- Cycle data row -->
+                      <div class="row cycledata">
+                        <div class="col-xs-8 col-sm-24 col-md-24 col-lg-8">
+                          <span>12/21/15</span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span class="sprite cycleopen q-small_Open" data-toggle="tooltip" data-placement="bottom"
+                            title="" data-original-title="Open"></span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span class="sprite cyclepending q-small_PendingHourglass" data-toggle="tooltip"
+                            data-placement="bottom" title="" data-original-title="Pending"></span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span class="sprite cyclepending q-small_PendingHourglass" data-toggle="tooltip"
+                            data-placement="bottom" title="" data-original-title="Pending"></span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span class="sprite cyclepending q-small_PendingHourglass" data-toggle="tooltip"
+                            data-placement="bottom" title="" data-original-title="Pending"></span>
+                        </div>
+
+
+                      </div>
+                      <!-- Cycle Data row -->
+
+
+
+                      <!-- Cycle data row -->
+                      <div class="row cycledata">
+                        <div class="col-xs-8 col-sm-24 col-md-24 col-lg-8">
+                          <span>12/22/15</span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span class="sprite cycleclosed q-small_Closed" data-toggle="tooltip" data-placement="bottom"
+                            title="" data-original-title="Closed"></span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span class="sprite cycleclosed q-small_Closed" data-toggle="tooltip" data-placement="bottom"
+                            title="" data-original-title="Closed"></span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span class="sprite cycleopen q-small_Open" data-toggle="tooltip" data-placement="bottom"
+                            title="" data-original-title="Open"></span>
+                        </div>
+
+                        <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+                          <span class="sprite cyclepending q-small_PendingHourglass" data-toggle="tooltip"
+                            data-placement="bottom" title="" data-original-title="Pending"></span>
+                        </div>
+
+
+                      </div>
+                      <!-- Cycle Data row -->
+
+
+
+
+                    </div>
+                  </div>
+
+
+
+
+                  <!-- Subtitle-->
+                  <div class="row">
+                    <div class="col-xs-24">
+                      <h2>Capacity Release Deadlines</h2>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-xs-24 cycledate">
+
+                      <!-- Date row -->
+                      <div class="row">
+                        <div class="col-xs-8 col-sm-24 col-md-24 col-lg-8 cyclelabel">
+                          <span>Timely</span>
+                        </div>
+
+                        <div class="col-xs-16 col-sm-24 col-md-24 col-lg-16">
+                          <span>12/21/15 11:30AM CDT</span>
+                        </div>
+                      </div>
+
+                      <!-- Date row -->
+                      <div class="row">
+                        <div class="col-xs-8 col-sm-24 col-md-24 col-lg-8 cyclelabel">
+                          <span>Evening</span>
+                        </div>
+
+                        <div class="col-xs-16 col-sm-24 col-md-24 col-lg-16">
+                          <span>12/21/15 6:00PM CDT</span>
+                        </div>
+                      </div>
+
+                      <!-- Date row -->
+                      <div class="row">
+                        <div class="col-xs-8 col-sm-24 col-md-24 col-lg-8 cyclelabel">
+                          <span>Intraday1</span>
+                        </div>
+
+                        <div class="col-xs-16 col-sm-24 col-md-24 col-lg-16">
+                          <span>12/22/15 2:00PM CDT</span>
+                        </div>
+                      </div>
+
+                      <!-- Date row -->
+                      <div class="row">
+                        <div class="col-xs-8 col-sm-24 col-md-24 col-lg-8 cyclelabel">
+                          <span>Intraday2</span>
+                        </div>
+
+                        <div class="col-xs-16 col-sm-24 col-md-24 col-lg-16">
+                          <span>12/22/15 5:00PM CDT</span>
+                        </div>
+                      </div>
+
+
+
+
+                    </div>
+                  </div>
+
+
+                </div>
+                <!-- End of Cycle Widget -->
+
+
+
+
+
+                <!-- Quick links widget -->
+                <div id="quick-links" class="widget material q-sidebar">
+                  <!-- Title -->
+                  <div class="row">
+                    <div class="col-xs-24 divider">
+                      <h1>Quick Links</h1>
+                    </div>
+                  </div>
+                  <!-- Cycle area -->
+
+
+
+
+
+                  <div class="row">
+                    <div class="col-xs-24 linkarea">
+                      <!-- Links appear within this data area -->
+
+                      <a href="#2" class="masterlink">
+                        <div class="row">
+                          <div class="col-xs-24 arealink hovshow">
+
+
+                            <!-- Subtitle-->
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <h2>Non-related Link</h2>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+
+
+
+                      <a href="#2" class="masterlink">
+                        <div class="row">
+                          <div class="col-xs-24 arealink hovshow">
+
+
+                            <!-- Subtitle-->
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <h2>Non-related Link2</h2>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+
+                      <a href="#2" class="masterlink">
+                        <div class="row">
+                          <div class="col-xs-24 arealink hovshow">
+
+
+                            <!-- Subtitle-->
+                            <div class="row">
+                              <div class="col-xs-24">
+                                <h2>Non-related Link3</h2>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+
+
+                      <!-- End of links -->
+
+                    </div>
+                  </div>
+
+
+
+
+
+                </div>
+                <!-- End of Quick links Widget -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- End of sidebar column -->
+              </div>
+
+              <div class="row">
+                <div class="col-xs-24">
+                  <div class="sprite backarrow" onclick="location.href='index.html'"></div>
+
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+
+          <!-- End of placeholder container -->
+        </div>
+      </div>
+    </section>
+    <aside>
+
+
+      <!-- ***** Start of first pane ****** -->
+      <div class="slide-out-pane support-pane support-pane-flex" id="pane-1">
+        <div class="top-wrapper">
+          <div class="title-actions">
+            <span>Support Assistant</span>
+            <div class="actions">
+              <button class="pane-dock sprite q-content_pin"></button> <button
+                class="pane-resize sprite q-content_Expansion"></button> <button
+                class="pane-toggle sprite q-content_Cancel"></button>
+            </div>
+          </div>
+        </div>
+        <div id="root"></div>
+      </div>
+  </div>
+
+
+  <!-- ***** End of first pane ****** -->
+
+
+  </aside>
+  <footer>
+    <div class="footer-compact">
+      <div class="footer-left">
+        <a class="footer-link" href="javascript:void(0)"><span class="sprite q-smallw_Back"></span> Back</a>
+      </div>
+      <div class="footer-center text-center">
+        <button aria-expanded="false" aria-haspopup="true"
+          class="openscreenscontrol openscreenscontrol-animations animated" data-toggle="dropdown"
+          id="openscreenscontrol"><span class="sprite q-smallw_OpenScreens animated saved-icon"
+            data-saved-image="q-actionw_Screens" data-unsaved-image="q-actionw_ClearVolumes"></span> <span
+            class="sprite q-smallw_Warning animated unsaved-icon" data-saved-image="q-actionw_Screens"
+            data-unsaved-image="q-actionw_ClearVolumes"></span> <span class="openscreencountholder animated">Open
+            Screens (<span class="openscreencount">3</span>) <span class="sprite q-smallw_CaretUp"></span></span>
+          <ul aria-labelledby="btnHeaderUser" class="q-dropdown-menu dropdown-menu openscreendropdown" role="menu">
+            <li class="dropdown-header" role="presentation">Open Screens</li>
+            <li>
+              <a href="javascript:void(0)">Customize your dashboard for the PIPELINE OPERATOR Persona</a><a
+                class="button" href="javascript:void(0)"><span class="sprite q-grid_Cancel"></span></a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">Customize your dashboard for the PIPELINE OPERATOR Persona<span
+                  class="modmark">*</span></a><a class="button" href="javascript:void(0)"><span
+                  class="sprite q-grid_Cancel"></span></a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">Dashboard Editor</a><a class="button" href="javascript:void(0)"><span
+                  class="sprite q-grid_Cancel"></span></a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">Customize your dashboard for the PIPELINE OPERATOR Persona</a><a
+                class="button" href="javascript:void(0)"><span class="sprite q-grid_Cancel"></span></a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">Cache Maintenance</a><a class="button" href="javascript:void(0)"><span
+                  class="sprite q-grid_Cancel"></span></a>
+            </li>
+            <li class="endstate haschanges" wipcount="6">
+              <a href="javascript:void(0)">View All&nbsp;<span class="modmark">*</span> (6)</a>
+            </li>
+            <li class="divider" role="presentation"></li>
+            <li class="dropdown-header" role="presentation">Current Screen</li>
+            <li>
+              <a href="javascript:void(0)">Location Maintenance [MWPL]</a>
+            </li>
+          </ul>
+        </button>
+      </div>
+      <div class="footer-right text-right">
+        <div aria-expanded="false" aria-haspopup="true" class="q-help" data-toggle="dropdown" id="btnHelp">
+          <a class="footer-link pane-toggle" data-pane="pane-1" href="javascript:void(0)" title="Help">Help <span
+              class="sprite q-smallw_Help"></span></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Unit selector window -->
+  <div class="fullwindow" id="window">
+    <p>Pipeline / Business unit selector options are dislayed here</p><a class="footerlink lightboxClose"
+      href="javascript:void(0)" id="ok">ok</a> <a class=" footerlink lightboxClose" href="javascript:void(0)"
+      id="cancel">Cancel</a>
+  </div>
+  <!-- End of Unit selector window -->
+
+  <!-- IMPORTANT: HTML for new MMenu menus below -->
+  <nav id="mainMenuSlideOut">
+    <ul>
+      <!--
+                    This represents the entire tree view of what the user has access to and is styled to appear as a different panel
+                    IMPORTANT: The CSS hides this to make it look like a separate panel but it is still rendered by MMenu
+                    The ID's should be a unique identifier for the panel
+                -->
+      <li class="hide-sitemap">
+        <a href="#sitemap">Sitemap</a>
+        <ul>
+          <li class="q-menuflowinggas">
+            <a href="#globaldash">Global Dashboard</a>
+          </li>
+          <li class="q-menunominations">
+            <a href="#qptm">QPTM</a>
+            <ul>
+              <li class="q-menuflowinggas">
+                <a href="#qptm/dash">QTPM Dashboard</a>
+              </li>
+              <li class="q-menuinvoicing">
+                <a href="#qptm/noms">Nominations</a>
+              </li>
+              <li class="q-menucapacityrelease">
+                <a href="#qptm/cr">Confirmation Response</a>
+              </li>
+            </ul>
+          </li>
+          <li class="q-menucontracts">
+            <a href="#tips">TIPS</a>
+            <ul>
+              <li class="q-menucontracts">
+                <a href="#tips/section1">Section1</a>
+              </li>
+              <li class="q-menureports">
+                <a href="#tips/section2">Section2</a>
+              </li>
+              <li class="q-menucontracts">
+                <a href="#tips/section3">Section3</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <!--
+                    IMPORTANT: Vertical Client-specific Menu
+                    Note the class Vertical to tell MMenu not to render these as different panes but act like accordions
+                -->
+      <li class="q-menunominations">
+        <a href="#subgroup1">Custom Group 1</a>
+        <ul class="Vertical">
+          <li class="q-menu">
+            <a href="#subgroup1/submenu3">Custom Link 2</a>
+          </li>
+          <li>
+            <a href="#subgroup2/submenu4">Custom Link 3</a>
+            <ul class="Vertical">
+              <li class="q-menu">
+                <a href="#subgroup1/submenu4/customlinka">Custom Report Link A</a>
+              </li>
+              <li class="q-menu">
+                <a href="#subgroup1/submenu4/customlinkb">Custom Report Link B</a>
+              </li>
+              <li class="q-menu">
+                <a href="#subgroup1/submenu4/customlinkc">Custom Report Link C</a>
+              </li>
+            </ul>
+          </li>
+          <li class="q-menu">
+            <a href="#subgroup1/submenu5">Custom Link 4</a>
+          </li>
+        </ul>
+      </li>
+      <li class="q-menuflowinggas">
+        <a href="#subgroup1">Custom Group 2</a>
+        <ul class="Vertical">
+          <li class="q-menu">
+            <a href="#subgroup1/submenu3">Custom Link 2</a>
+          </li>
+          <li>
+            <a href="#subgroup2/submenu4">Custom Link 3</a>
+            <ul class="Vertical">
+              <li class="q-menu">
+                <a href="#subgroup1/submenu4/customlinka">Custom Report Link A</a>
+              </li>
+              <li>
+                <a href="#subgroup1/submenu4/customlinkb">Custom Report Link B</a>
+                <ul class="Vertical">
+                  <li class="q-menu">
+                    <a href="#subgroup1/submenu4/customlinkb/customlinkb1">Custom Report Link B1</a>
+                  </li>
+                  <li class="q-menu">
+                    <a href="#subgroup1/submenu4/customlinkb/customlinkb2">Custom Report Link B2</a>
+                  </li>
+                  <li class="q-menu">
+                    <a href="#subgroup1/submenu4/customlinkb/customlinkb3">Custom Report Link B3</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="q-menu">
+                <a href="#subgroup1/submenu4/customlinkc">Custom Report Link C</a>
+              </li>
+            </ul>
+          </li>
+          <li class="q-menu">
+            <a href="#subgroup1/submenu5">Custom Link 4</a>
+          </li>
+        </ul>
+      </li>
+      <li class="q-menuinvoicing">
+        <a href="#submenu1">Custom Link 5</a>
+      </li>
+      <li class="q-menucontracts">
+        <a href="#submenu6">Custom Link 6</a>
+      </li>
+      <li class="q-menureports">
+        <a href="#subgroup2">Custom Group 2</a>
+        <ul class="Vertical">
+          <li class="q-menu">
+            <a href="#subgroup2/submenu7">Custom Link 7</a>
+          </li>
+          <li class="q-menu">
+            <a href="#subgroup2/submenu8">Custom Link 8</a>
+          </li>
+          <li class="q-menu">
+            <a href="#subgroup2/submenu9">Custom Link 9</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+
+
+      $("#supportsearch").focus(function () {
+
+      });
+
+
+      //$(".openscreenscontrol").hide();
+      /* The aim here is to use the most reliable way to detect mobile browsers in order to handle tooltips. The default behaviour for a tooltip to appear on a link or button is for the first tap to trigger the tooltip and the second tap to trigger the link or button action. As this can slow down users who are familiar with buttons, a solution that applies to mobile devices only is necessary.
+
+      .NET framework supports the isMobileDevice ( https://msdn.microsoft.com/en-us/library/system.web.configuration.httpcapabilitiesbase.ismobiledevice%28v=vs.110%29.aspx) but this appears to be no more than a browser sniffer which even after updating the database of browsers has been shown to be unreliable. The next option would be to detect touch screens like:
+
+      var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
+
+      if (!isTouch){
+              // Activate tooltips for desktops only
+      }
+
+      ... however this again has been proven to be unreliable and leaves us with two options
+
+      1. Using Kendo's browser detection and looking for the k-mobile class added to the HTML tag or
+      2. Integrating modernizr.js (https://modernizr.com/) into the app.
+
+      The second option is a popular choice but I would question adding it at this stage, especially that we have relied on Kendo up to this point and some of the functionality may be duplicated.
+
+      As QFC is invested in the Kendo UI framework, it could be a solid bet to bank on the browser value that they provide or put pressure on them to integrate a similar detection method to their Telerik UI library (http://docs.telerik.com/devtools/aspnet-ajax/controls/telerik-static-client-library) to detect touch and mobile.
+
+
+      It is important to note that NONE of these will detect every possible mobile device but should work in the majority of cases. Relying on the Kendo value may be the most futureproof as we are updating the Kendo library as new releases become available.
+
+      Currently we are using media breakpoints in the CSS to define screen layouts as the screen size should determine the layout below a certain size but this is separate from subjects of mobile/touch functionality as described above.
+
+      FYI:
+
+      Breakpoints are
+      less than 480px are for phones
+      above 481px and less than 768px are for phablets and tablets
+      above 769px and below 992px are for large tablets
+      993px and above are for desktops
+
+      */
+      /* Initiate tooltips only for desktop devices */
+      var isMobile = $('html').hasClass('k-mobile');
+
+      /* Initiate Bootstrap Popovers*/
+      $(function () {
+        $('[data-toggle="popover"]').popover();
+      });
+
+      // Temp code to toggle the unsaved work icon on/off
+      $("#DoNotUseMe").hide(); // Demo code, don't use!
+      $("#unsaved").click(function () {
+        $("#btnHeaderUser").addClass("alert_asterisk");
+        $("#DoNotUseMe").show(); // Demo code, don't use!
+      });
+
+      $("#logoswap").click(function () {
+        $("#logoimg").removeClass("q-logo-img");
+        $("#logoimg").addClass("q-logo-img-client");
+      });
+
+      var window = $("#window"),
+        UnitSelection = $("#UnitSelection"),
+        cancel = $("#cancel"),
+        ok = $("#ok");
+
+      UnitSelection.bind("click", function () {
+        window.data("kendoWindow").center().open();
+      });
+
+      if (!window.data("kendoWindow")) {
+        window.kendoWindow({
+          actions: ["close"],
+          draggable: false,
+          resizable: false,
+          title: "Select your Pipeline (Sample heading)",
+          autofocus: true,
+          activate: function () {
+            ok.focus();
+          },
+          close: function () { }
+        });
+      }
+
+      cancel.click(function () {
+        window.data("kendoWindow").close();
+        UnitSelection.show();
+      });
+
+      ok.click(function () {
+        window.data("kendoWindow").close();
+        UnitSelection.show();
+      });
+
+      $("#autocomplete2,#autocompleteWithIcon,#autocompleteWithIcon2").kendoAutoComplete({
+        dataSource: {
+          data: ["Test", "Test1", "Test2", "Test3", "Test4", "Test5"]
+        }
+      });
+    });
+  </script>
+
+  <script>
+    function pickListButtonPressed(popupName) {
+      // Get the popup window
+      var window = $('#' + popupName).data('kendoWindow');
+      // Open it
+      window.center().open();
+    }
+
+    $('#autoSearch').click(function () {
+      $('#q_autocomplete').removeClass('float_search_auto');
+      $('#autocomplete2').focus();
+      $('#q_d_1,#q_d_2,#q_d_3').addClass('float_search_auto');
+      $('<div id="menuoverlay" class="q-overlay-search" onclick="SearchOverlayClick()"></div>').appendTo($(document.body));
+      $('#menuoverlay').hide();
+      $('#menuoverlay').fadeIn();
+    });
+
+    function SearchOverlayClick() {
+      $('#q_d_1,#q_d_2,#q_d_3').removeClass('float_search_auto');
+      $('#q_autocomplete').addClass('float_search_auto');
+      $('#menuoverlay').remove();
+    }
+
+    function overlayClick() {
+      $('#menuContainer,#menuContent').removeClass('viewMenu');
+      $('#q_logo').removeClass('q_logo_extended').addClass('q-logo');
+      $('#mainNavigation').removeClass('updatedMainNavigation').addClass('master');
+      $('#menuContainer').addClass('hideMenu');
+      $('#menuContent').addClass('menuOpen');
+      $('#q_appholder').addClass('apphide');
+      $('#menuoverlay').remove();
+    }
+
+    $('#menuContainer').on('mouseenter', function (e) {
+      if (!$('#menuoverlay').length) {
+        var isHovered = $('#menuContainer:hover').length;
+        if (isHovered) {
+          $('<div id="menuoverlay" class="q-overlay-menu" onclick="overlayClick()"></div>').appendTo($(document.body));
+          $('#menuoverlay').hide();
+          $('#menuoverlay').fadeIn('slow');
+        }
+      }
+    });
+
+    // Check classes to see if text has ellipsis, then add data-title attribute to display styled tooltip - on Mouseenter used to reduce peformance hit of checking on page load and will adapt to varying browser sizes - add in any classes that need to be checked below.
+    $('.q-header_Item, .widget h1, .widget h2, .widget h3, .widget h4, .widget h5, .widget h6, .alertlabel, .datalabel, .errorlabel, .widgetfooter a, .unitselect ').on('mouseenter', function () {
+      var $this = $(this);
+      if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+        $this.attr('data-title', $this.text());
+      }
+    });
+
+    // Function to use default browser tooltip when area overflow is set to hidden
+    $('.widgetfooter a').on('mouseenter', function () {
+      var $this = $(this);
+      if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+        $this.attr('title', $this.text());
+      }
+    });
+  </script>
+
+  <!-- IMPORTANT: MMenu script for new off canvas menu -->
+  <!-- IMPORTANT: Curtis, please note the addition of the logoimg id on the span tag under fixednavheader -->
+  <!-- IMPORTANT: This script breaks the kendo wysiwyg editor... switcing it off until we can figure out why. -->
+  <script type="text/javascript">
+    $('nav#mainMenuSlideOut').mmenu({
+      extensions: [
+        'pagedim-white',
+        'pageshadow',
+        'multiline',
+      ],
+      'offCanvas': {
+        position: 'left',
+        zposition: 'next'
+      },
+      'navbars': [{
+        "content": [
+          '<div class="fixednavheader"><span id="q_logo" class="q-logo"><span id="logoimg" class="q-logo-img"></span></span><div class="menusitemap_holder"><div class="menueditlink"><a href="javascript: qfc.core.editCustomMenu()"><div class="sprite q-content_Edit"></div></a></div><span class="mainlink linkactivated" id="menu-link">Menu</span><span id="sitemap-link" class="mainlink">Sitemap</span></div>',
+          'prev',
+          'title',
+          'close',
+          '</div>',
+        ],
+      }, {
+        'position': 'bottom',
+        'content': [
+          '<span class="poweredby">powered by qmposer</span>',
+        ],
+      }],
+    });
+
+    $(window).load(function () {
+      /**
+       * This is come when complete page is fully loaded, including all
+       * frames, objects and images.
+       * IMPORTANT: the id #mainMenuSlideOut must be used for the main
+       * off canvas menu.
+       */
+      var api = $('nav#mainMenuSlideOut').data('mmenu'),
+        sitemaplink = $('#sitemap-link'),
+        menulink = $('#menu-link'),
+        menupane = 'mm-1',
+        sitemappane = 'mm-2',
+        sitemapswitch = '0';
+
+      // Initially hide the breadcrumb title of the main menu
+      $('#mainMenuSlideOut .mm-title').hide();
+
+      api.bind('openPanel', function ($panel) {
+        /**
+         * Hide the breadcrumb navigation as the main menu link is
+         * already selected.
+         * Switch off the back arrow in the off  canvas breadcrumb to
+         * make sitemap look like a different pane.
+         */
+        if (sitemappane == $panel.attr('id')) {
+          $('#mainMenuSlideOut .mm-prev').hide();
+          $('#mainMenuSlideOut .mm-title').hide();
+        } else if (sitemapswitch == '1') {
+          $('#mainMenuSlideOut .mm-prev').show();
+          $('#mainMenuSlideOut .mm-title').show();
+        }
+      });
+
+      sitemaplink.click(function () {
+        api.openPanel($('#mm-2')); // IMPORTANT: We need to correctly identify what the rendered ID should be.
+        api.update();
+        sitemaplink.addClass('linkactivated');
+        menulink.removeClass('linkactivated');
+        sitemapswitch = '1';
+      });
+
+      menulink.click(function () {
+        api.openPanel($('#mm-1'));  // IMPORTANT: We need to correctly identify what the rendered ID should be.
+        api.update();
+        menulink.addClass('linkactivated');
+        sitemaplink.removeClass('linkactivated');
+        sitemapswitch = '0';
+        $('#mainMenuSlideOut .mm-title').hide(); // Hide the nav title.
+        $('#mainMenuSlideOut .mm-prev').hide();
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      var cssvalue = '';
+      $('.tertiaryDropDown > li > button > span:first-child').each(function () {
+        cssvalue = $(this).css('background-position');
+        if ($(this).css('background-position') == '0% 0%') {
+          $(this).addClass('q-content_action');
+        }
+      });
+
+      $('.tertiaryDropDown > li > a > span:first-child').each(function () {
+        cssvalue = $(this).css('background-position');
+        if ($(this).css('background-position') == '0% 0%') {
+          $(this).addClass("q-content_links");
+        }
+      });
+    });
+  </script>
+
+  <!-- Included files below for notes and pane functionality -->
+  <script src="Content/30_Quorum/js/panes/pane.js"></script>
+</body>
+
 </html>
